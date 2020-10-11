@@ -41,25 +41,17 @@ public class ClientService {
 	@Transactional
 	public ClientDTO insert(ClientDTO dto) {
 		Client entity = new Client();
-		entity.setName(dto.getName());
-		entity.setCpf(dto.getCpf());
-		entity.setIncome(dto.getIncome());
-		entity.setBirthDate(dto.getBirthDate());
-		entity.setChildren(dto.getChildren());
+		copyDtoToEntity(dto, entity);		
 		entity = repository.save(entity);
 		
 		return new ClientDTO(entity);
-	}
+	}	
 
 	@Transactional
 	public ClientDTO update(Long id, ClientDTO dto) {
 		try {
 			Client entity = repository.getOne(id);
-			entity.setName(dto.getName());
-			entity.setCpf(dto.getCpf());
-			entity.setIncome(dto.getIncome());
-			entity.setBirthDate(dto.getBirthDate());
-			entity.setChildren(dto.getChildren());
+			copyDtoToEntity(dto, entity);			
 			entity = repository.save(entity);
 			
 			return new ClientDTO(entity);	
@@ -80,6 +72,14 @@ public class ClientService {
 			throw new DatabaseException("Integrity violation");
 		}
 				
+	}
+	
+	private void copyDtoToEntity(ClientDTO dto, Client entity) {
+		entity.setName(dto.getName());
+		entity.setCpf(dto.getCpf());
+		entity.setIncome(dto.getIncome());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setChildren(dto.getChildren());
 	}
 	
 	
